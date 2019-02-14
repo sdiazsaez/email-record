@@ -11,8 +11,8 @@
     "require": {
         "illuminate/support": "5.*",
         "illuminate/mail": "5.*",
-        "larangular/routing-controller": "^0.1.0",
-        "larangular/support": "^0.1.3"
+        "larangular/routing-controller": "0.1.*",
+        "larangular/support": "0.1.*"
     },
     "autoload": {
         "psr-4": {
