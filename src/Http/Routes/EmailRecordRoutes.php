@@ -13,6 +13,7 @@ Route::group([
     Route::resource('requests', 'EmailRequests\Gateway');
     Route::get('test', 'Emails\SendEmailController@test');
 });
+
 Route::group([
                  'prefix'    => config('email-record.route_prefix'),
                  'namespace' => '\Larangular\EmailRecord\Http\Controllers',

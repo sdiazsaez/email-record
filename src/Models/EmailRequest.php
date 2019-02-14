@@ -20,8 +20,8 @@ class EmailRequest extends Model {
     ];
     protected $with = ['sentEmail'];
     protected $appends = [
-        'emailTypeClass',
-        'emailTypeName',
+        'email_type_class',
+        'email_type_name',
     ];
 
     public function __construct(array $attributes = []) {

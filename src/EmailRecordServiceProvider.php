@@ -10,6 +10,7 @@ namespace Larangular\EmailRecord;
 
 use Illuminate\Support\ServiceProvider;
 use Larangular\EmailRecord\Commands\SendCommand;
+use EmailTypesBuilder;
 
 class EmailRecordServiceProvider extends ServiceProvider {
 
@@ -24,5 +25,9 @@ class EmailRecordServiceProvider extends ServiceProvider {
 
     public function register() {
         $this->commands(SendCommand::class);
+
+        $this->app->bind('EmailRecordTypeBuilder', function($app) {
+            return new EmailTypesBuilder();
+        });
     }
 }
