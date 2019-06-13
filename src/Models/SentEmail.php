@@ -24,7 +24,7 @@ class SentEmail extends Model {
 
         $installableConfig = InstallableConfig::config('Larangular\EmailRecord\EmailRecordServiceProvider');
         $this->connection = $installableConfig->getConnection('sent_emails');
-        $this->name = $installableConfig->getName('sent_emails');
+        $this->table = $installableConfig->getName('sent_emails');
     }
 
 

@@ -26,7 +26,7 @@ class EmailRequest extends Model {
         parent::__construct($attributes);
         $installableConfig = InstallableConfig::config('Larangular\EmailRecord\EmailRecordServiceProvider');
         $this->connection = $installableConfig->getConnection('email_requests');
-        $this->name = $installableConfig->getName('email_requests');
+        $this->table = $installableConfig->getName('email_requests');
     }
 
     public function sentEmail() {
