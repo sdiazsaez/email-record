@@ -3,10 +3,7 @@
 namespace Larangular\EmailRecord\Http\Controllers\EmailRequests;
 
 use Larangular\EmailRecord\Models\EmailRequest;
-use Larangular\RoutingController\{Controller,
-    Contracts\IGatewayModel};
-use Illuminate\Http\Request;
-use Larangular\Support\Instance;
+use Larangular\RoutingController\{Contracts\IGatewayModel, Controller};
 
 class Gateway extends Controller implements IGatewayModel {
 

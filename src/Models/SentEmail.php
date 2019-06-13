@@ -4,14 +4,13 @@ namespace Larangular\EmailRecord\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Larangular\Installable\Facades\InstallableConfig;
 use Larangular\RoutingController\Model as RoutingModel;
-use Larangular\EmailRecord\Models\EmailRequest;
 
 class SentEmail extends Model {
 
     use SoftDeletes, RoutingModel;
 
-    protected $table = 'sent_emails';
     protected $dates = ['deleted_at'];
     protected $fillable = [
         'to',
@@ -22,7 +21,10 @@ class SentEmail extends Model {
 
     public function __construct(array $attributes = []) {
         parent::__construct($attributes);
-        $this->connection = config('email-record.connection');
+
+        $installableConfig = InstallableConfig::config('Larangular\EmailRecord\EmailRecordServiceProvider');
+        $this->connection = $installableConfig->getConnection('sent_emails');
+        $this->name = $installableConfig->getName('sent_emails');
     }
 
 

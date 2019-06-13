@@ -1,33 +1,61 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simon
- * Date: 3/24/18
- * Time: 21:41
- */
 
 namespace Larangular\EmailRecord;
 
-use Illuminate\Support\ServiceProvider;
-use Larangular\EmailRecord\Commands\SendCommand;
 use EmailTypesBuilder;
+use Larangular\EmailRecord\Commands\SendCommand;
+use Larangular\Installable\{Contracts\HasInstallable, Contracts\Installable, Installer\Installer};
+use Larangular\Installable\Support\{InstallableServiceProvider as ServiceProvider, PublisableGroups};
 
-class EmailRecordServiceProvider extends ServiceProvider {
+class EmailRecordServiceProvider extends ServiceProvider implements HasInstallable {
 
     public function boot() {
-        $this->loadRoutesFrom(__DIR__ . '/Http/Routes/EmailRecordRoutes.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
         $this->publishes([
-                             __DIR__ . '/../config/email-record.php' => config_path('email-record.php'),
-                         ]);
-
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+            __DIR__ . '/../config/email-record.php' => config_path('email-record.php'),
+        ]);
     }
 
     public function register() {
         $this->commands(SendCommand::class);
-
-        $this->app->bind('EmailRecordTypeBuilder', function($app) {
+        $this->app->bind('EmailRecordTypeBuilder', static function () {
             return new EmailTypesBuilder();
         });
+
+        $this->declareMigrationGlobal();
+        $this->declareMigrationSentEmails();
+        $this->declareMigrationEmailRequests();
     }
+
+    public function installer(): Installable {
+        return new Installer(__CLASS__);
+    }
+
+    private function declareMigrationGlobal(): void {
+        $this->declareMigration([
+            'connection'   => 'mysql',
+            'migrations'   => [
+                'local_path' => base_path() . '/vendor/larangular/email-record/database/migrations',
+            ],
+            'seeds'        => [
+                'local_path' => __DIR__ . '/../database/seeds',
+            ],
+            'seed_classes' => [],
+        ]);
+    }
+
+    private function declareMigrationSentEmails() {
+        $this->declareMigration([
+            'name'      => 'sent_emails',
+            'timestamp' => true,
+        ]);
+    }
+
+    private function declareMigrationEmailRequests() {
+        $this->declareMigration([
+            'name'      => 'email_requests',
+            'timestamp' => true,
+        ]);
+    }
+
 }

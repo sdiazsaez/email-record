@@ -1,20 +1,21 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Larangular\Installable\Facades\InstallableConfig;
 use Larangular\MigrationPackage\Migration\Schematics;
 
 class CreateEmailRequestsTable extends Migration {
     use Schematics;
-    protected $name = 'email_requests';
 
     public function __construct() {
-        $this->connection = config('email-record.connection');
-
+        $installableConfig = InstallableConfig::config('Larangular\EmailRecord\EmailRecordServiceProvider');
+        $this->connection = $installableConfig->getConnection('email_requests');
+        $this->name = $installableConfig->getName('email_requests');
     }
 
-    public function up() {
-        $this->create(function (Blueprint $table) {
+    public function up(): void {
+        $this->create(static function (Blueprint $table) {
             $table->increments('id');
             $table->integer('content_id');
             $table->integer('sent_email_id')
@@ -28,7 +29,7 @@ class CreateEmailRequestsTable extends Migration {
         });
     }
 
-    public function down() {
+    public function down(): void {
         $this->drop();
     }
 }

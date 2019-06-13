@@ -1,23 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simon
- * Date: 10/21/18
- * Time: 19:26
- */
+
+use Illuminate\Support\Facades\Route;
 
 Route::group([
-                 'prefix'    => 'api/' . config('email-record.route_prefix'),
-                 'namespace' => '\Larangular\EmailRecord\Http\Controllers',
-             ], function () {
+    'prefix'    => 'api/' . config('email-record.route_prefix'),
+    'namespace' => '\Larangular\EmailRecord\Http\Controllers',
+], static function () {
     Route::resource('requests', 'EmailRequests\Gateway');
     Route::get('test', 'Emails\SendEmailController@test');
 });
 
 Route::group([
-                 'prefix'    => config('email-record.route_prefix'),
-                 'namespace' => '\Larangular\EmailRecord\Http\Controllers',
-             ], function () {
+    'prefix'    => config('email-record.route_prefix'),
+    'namespace' => '\Larangular\EmailRecord\Http\Controllers',
+], static function () {
 
     Route::get('preview/{id}/{emailType?}', 'Emails\SendEmailController@preview');
 
