@@ -25,6 +25,7 @@ class EmailRecordServiceProvider extends ServiceProvider implements HasInstallab
         $this->declareMigrationGlobal();
         $this->declareMigrationSentEmails();
         $this->declareMigrationEmailRequests();
+        $this->declareMigrationEmailFailures();
     }
 
     public function installer(): Installable {
@@ -54,6 +55,13 @@ class EmailRecordServiceProvider extends ServiceProvider implements HasInstallab
     private function declareMigrationEmailRequests() {
         $this->declareMigration([
             'name'      => 'email_requests',
+            'timestamp' => true,
+        ]);
+    }
+
+    private function declareMigrationEmailFailures() {
+        $this->declareMigration([
+            'name'      => 'email_failures',
             'timestamp' => true,
         ]);
     }
