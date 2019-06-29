@@ -11,7 +11,7 @@ class SentEmail extends Model {
 
     use SoftDeletes, RoutingModel;
 
-    protected $dates = ['deleted_at'];
+    protected $dates    = ['deleted_at'];
     protected $fillable = [
         'to',
         'from',
@@ -40,12 +40,24 @@ class SentEmail extends Model {
         $this->attributes['bbc'] = json_encode($value);
     }
 
-
     public function setContentAttribute($value) {
         $this->attributes['content'] = json_encode($value);
     }
 
     public function getContentAttribute($value) {
+        return json_decode($value);
+    }
+
+    public function getToAttribute($value) {
+        return json_decode($value);
+    }
+
+    public function getFromAttribute($value) {
+        return json_decode($value);
+    }
+
+
+    public function getBbcAttribute($value) {
         return json_decode($value);
     }
 

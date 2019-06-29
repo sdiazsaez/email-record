@@ -8,6 +8,7 @@ Route::group([
 ], static function () {
     Route::resource('requests', 'EmailRequests\Gateway');
     Route::get('test', 'Emails\SendEmailController@test');
+    Route::get('types', 'EmailTypesBuilder\EmailTypes@types');
 });
 
 Route::group([
