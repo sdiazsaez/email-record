@@ -11,9 +11,4 @@ class Gateway extends Controller implements IGatewayModel {
         return EmailRequest::class;
     }
 
-    public function save($data) {
-        $request = parent::save($data);
-        return $request;
-    }
-
 }

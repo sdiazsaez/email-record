@@ -5,19 +5,22 @@ namespace Larangular\EmailRecord\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Larangular\Installable\Facades\InstallableConfig;
-use Larangular\RoutingController\Model as RoutingModel;
+use Larangular\RoutingController\CachableModel as RoutingModel;
 
 class EmailRequest extends Model {
 
     use SoftDeletes, RoutingModel;
-    protected $dates = ['deleted_at'];
+    protected $dates    = ['deleted_at'];
     protected $fillable = [
         'content_id',
         'email_type',
         'sent_email_id',
     ];
-    protected $with = ['sentEmail'];
-    protected $appends = [
+    protected $with     = [
+        'sentEmail',
+        'emailFailures',
+    ];
+    protected $appends  = [
         'email_type_class',
         'email_type_name',
     ];
@@ -32,6 +35,10 @@ class EmailRequest extends Model {
     public function sentEmail() {
         return $this->hasOne(SentEmail::class, 'id', 'sent_email_id')
                     ->withTrashed();
+    }
+
+    public function emailFailures() {
+        return $this->hasMany(EmailFailures::class, 'email_request_id', 'id');
     }
 
     public function getEmailTypeClassAttribute() {

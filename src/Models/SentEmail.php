@@ -5,7 +5,7 @@ namespace Larangular\EmailRecord\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Larangular\Installable\Facades\InstallableConfig;
-use Larangular\RoutingController\Model as RoutingModel;
+use Larangular\RoutingController\CachableModel as RoutingModel;
 
 class SentEmail extends Model {
 

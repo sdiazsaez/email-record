@@ -1,6 +1,6 @@
 <?php
 
-namespace Larangular\EmailRecord\EmailTypesBuilder;
+namespace Larangular\EmailRecord\Http\Controllers\EmailTypesBuilder;
 
 use Larangular\RoutingController\MakeResponse;
 

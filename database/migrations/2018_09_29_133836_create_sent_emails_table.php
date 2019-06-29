@@ -18,12 +18,12 @@ class CreateSentEmailsTable extends Migration {
     public function up(): void {
         $this->create(static function (Blueprint $table) {
             $table->increments('id');
-            $table->text('to');
-            $table->string('from')
+            $table->longText('to');
+            $table->longText('from')
                   ->nullable();
-            $table->string('bbc')
+            $table->longText('bbc')
                   ->nullable();
-            $table->text('content')
+            $table->longText('content')
                   ->nullable();
             $table->softDeletes();
             $table->timestamps();
