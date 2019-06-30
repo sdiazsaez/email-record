@@ -9,7 +9,7 @@ class EmailTypes {
     use MakeResponse;
 
     public function types() {
-        return $this->makeResponse(config('email_types'));
+        return $this->makeResponse(config('email-record.email_types'));
     }
 
 }

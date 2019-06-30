@@ -23,7 +23,7 @@ class EmailPreview {
         if (is_null($emailType)) {
             $emailRequest = EmailRequest::find($id);
             $contentId = $emailRequest->content_id;
-            $emailType = $emailRequest->email_type_class;
+            $emailType = $emailRequest->email_type;
         }
 
         return $this->getRecordableEmail(config('email-record.email_types.' . $emailType . '.type_class'), $contentId);
