@@ -7,7 +7,7 @@ Route::group([
     'namespace' => '\Larangular\EmailRecord\Http\Controllers',
 ], static function () {
     Route::resource('requests', 'EmailRequests\Gateway');
-    Route::get('types', 'EmailTypesBuilder\EmailTypes@types');
+    Route::get('types/{id?}', 'EmailTypesBuilder\EmailTypes@types');
 });
 
 Route::group([
