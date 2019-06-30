@@ -4,12 +4,13 @@ namespace Larangular\EmailRecord\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Larangular\EmailRecord\Http\Controllers\Emails\RecordableEmailLoader;
 use Larangular\Installable\Facades\InstallableConfig;
 use Larangular\RoutingController\CachableModel as RoutingModel;
 
 class EmailRequest extends Model {
 
-    use SoftDeletes, RoutingModel;
+    use SoftDeletes, RoutingModel, RecordableEmailLoader;
     protected $dates    = ['deleted_at'];
     protected $fillable = [
         'content_id',
@@ -42,11 +43,13 @@ class EmailRequest extends Model {
     }
 
     public function getEmailTypeClassAttribute() {
-        return config('email-record.email_types.' . $this->attributes['email_type'] . '.type_class');
+        $type = $this->getTypes($this->attributes['email_type']);
+        return $type['type_class'];
     }
 
     public function getEmailTypeNameAttribute() {
-        return config('email-record.email_types.' . $this->attributes['email_type'] . '.type_name');
+        $type = $this->getTypes($this->attributes['email_type']);
+        return $type['type_name'];
     }
 
     public function scopeNotSent($query) {

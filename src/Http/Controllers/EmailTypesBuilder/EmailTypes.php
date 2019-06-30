@@ -2,14 +2,15 @@
 
 namespace Larangular\EmailRecord\Http\Controllers\EmailTypesBuilder;
 
+use Larangular\EmailRecord\Http\Controllers\Emails\RecordableEmailLoader;
 use Larangular\RoutingController\MakeResponse;
 
 class EmailTypes {
 
-    use MakeResponse;
+    use MakeResponse, RecordableEmailLoader;
 
-    public function types() {
-        return $this->makeResponse(config('email-record.email_types'));
+    public function types(int $id = null) {
+        return $this->makeResponse($this->getTypes($id));
     }
 
 }

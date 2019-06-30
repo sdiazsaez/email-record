@@ -26,7 +26,8 @@ class EmailPreview {
             $emailType = $emailRequest->email_type;
         }
 
-        return $this->getRecordableEmail(config('email-record.email_types.' . $emailType . '.type_class'), $contentId);
+        $type = $this->getTypes($emailType);
+        return $this->getRecordableEmail($type['type_class'], $contentId);
     }
 
     private function emailPreviewFailure() {

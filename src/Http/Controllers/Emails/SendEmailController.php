@@ -14,8 +14,8 @@ class SendEmailController {
 
     public function preview($id, $emailType = null) {
         if (!is_null($emailType)) {
-            $mailable = $this->getRecordableEmail(config('email-record.email_types.' . $emailType . '.type_class'),
-                $id);
+            $type = $this->getTypes($emailType);
+            $mailable = $this->getRecordableEmail($type['type_class'], $id);
             if (Instance::instanceOf($mailable, RecordableEmail::class)) {
                 return view($mailable->templatePath(), $mailable->content());
             }
