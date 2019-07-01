@@ -14,6 +14,11 @@ class EmailRecordServiceProvider extends ServiceProvider implements HasInstallab
         $this->publishes([
             __DIR__ . '/../config/email-record.php' => config_path('email-record.php'),
         ]);
+
+        $this->declareMigrationGlobal();
+        $this->declareMigrationSentEmails();
+        $this->declareMigrationEmailRequests();
+        $this->declareMigrationEmailFailures();
     }
 
     public function register() {
@@ -21,11 +26,6 @@ class EmailRecordServiceProvider extends ServiceProvider implements HasInstallab
         $this->app->bind('EmailRecordTypeBuilder', static function () {
             return new EmailTypesBuilder();
         });
-
-        $this->declareMigrationGlobal();
-        $this->declareMigrationSentEmails();
-        $this->declareMigrationEmailRequests();
-        $this->declareMigrationEmailFailures();
     }
 
     public function installer(): Installable {
