@@ -18,12 +18,17 @@ class CreateEmailRequestsTable extends Migration {
         $this->create(static function (Blueprint $table) {
             $table->increments('id');
             $table->integer('content_id');
-            $table->integer('sent_email_id')
-                  ->foreign('sent_emails_id')
-                  ->references('id')
-                  ->on('sent_emails')
-                  ->nullable();
             $table->string('email_type');
+            $table->longText('to');
+            $table->longText('from')
+                  ->nullable();
+            $table->longText('bcc')
+                  ->nullable();
+            $table->longText('content')
+                  ->nullable();
+            $table->timestamp('sent_at')
+                  ->nullable();
+
             $table->softDeletes();
             $table->timestamps();
         });

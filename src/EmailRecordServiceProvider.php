@@ -16,7 +16,6 @@ class EmailRecordServiceProvider extends ServiceProvider implements HasInstallab
         ]);
 
         $this->declareMigrationGlobal();
-        $this->declareMigrationSentEmails();
         $this->declareMigrationEmailRequests();
         $this->declareMigrationEmailFailures();
     }
@@ -42,13 +41,6 @@ class EmailRecordServiceProvider extends ServiceProvider implements HasInstallab
                 'local_path' => __DIR__ . '/../database/seeds',
             ],
             'seed_classes' => [],
-        ]);
-    }
-
-    private function declareMigrationSentEmails() {
-        $this->declareMigration([
-            'name'      => 'sent_emails',
-            'timestamp' => true,
         ]);
     }
 

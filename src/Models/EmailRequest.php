@@ -15,10 +15,13 @@ class EmailRequest extends Model {
     protected $fillable = [
         'content_id',
         'email_type',
-        'sent_email_id',
+        'to',
+        'from',
+        'bcc',
+        'content',
+        'sent_at',
     ];
     protected $with     = [
-        'sentEmail',
         'emailFailures',
     ];
     protected $appends  = [
@@ -33,13 +36,40 @@ class EmailRequest extends Model {
         $this->table = $installableConfig->getName('email_requests');
     }
 
-    public function sentEmail() {
-        return $this->hasOne(SentEmail::class, 'id', 'sent_email_id')
-                    ->withTrashed();
-    }
-
     public function emailFailures() {
         return $this->hasMany(EmailFailures::class, 'email_request_id', 'id');
+    }
+
+    public function setToAttribute($value) {
+        $this->attributes['to'] = json_encode($value);
+    }
+
+    public function setFromAttribute($value) {
+        $this->attributes['from'] = json_encode($value);
+    }
+
+    public function setBbcAttribute($value) {
+        $this->attributes['bbc'] = json_encode($value);
+    }
+
+    public function setContentAttribute($value) {
+        $this->attributes['content'] = json_encode($value);
+    }
+
+    public function getContentAttribute($value) {
+        return json_decode($value);
+    }
+
+    public function getToAttribute($value) {
+        return json_decode($value);
+    }
+
+    public function getFromAttribute($value) {
+        return json_decode($value);
+    }
+
+    public function getBbcAttribute($value) {
+        return json_decode($value);
     }
 
     public function getEmailTypeClassAttribute() {
@@ -53,7 +83,12 @@ class EmailRequest extends Model {
     }
 
     public function scopeNotSent($query) {
-        return $query->where('sent_email_id', null);
+        return $query->where('sent_at', null);
+    }
+
+    public function sent() {
+        $this->sent_at = $this->freshTimestampString();
+        return $this->save();
     }
 
 }

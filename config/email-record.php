@@ -1,8 +1,9 @@
 <?php
 
 return [
-    'route_prefix' => 'email-record',
-    'email_types' => [
+    'route_prefix'     => 'email-record',
+    'mail_bcc_default' => env('MAIL_BCC_DEFAULT', ''),
+    'email_types'      => [
 
     ]
 ];

@@ -12,6 +12,12 @@ class SendEmailController {
 
     use RecordableEmailLoader;
 
+    private $defaultBCC;
+
+    public function __construct() {
+        $this->defaultBCC = config('email-record.mail_default_bcc', false);
+    }
+
     public function preview($id, $emailType = null) {
         if (!is_null($emailType)) {
             $type = $this->getTypes($emailType);
@@ -23,7 +29,7 @@ class SendEmailController {
 
     }
 
-    public function sendEmails() {
+    public function sendEmails(): void {
         $emailRequests = EmailRequest::notSent()
                                      ->get();
 
@@ -32,14 +38,17 @@ class SendEmailController {
         }
     }
 
-    private function send(EmailRequest $request) {
+    private function send(EmailRequest $request): void {
         $mailable = $this->getRecordableEmail($request->email_type_class, $request->content_id);
+
+        if ($this->defaultBCC !== false) {
+            array_push($mailable->bcc, $this->defaultBCC);
+        }
+
         Mail::send($mailable);
 
         if (count(Mail::failures()) <= 0) {
-            $record = $this->recordSentEmail($mailable);
-            $request->sent_email_id = $record->id;
-            $request->save();
+            $this->emailRequestSentUpdate($request, $mailable);
         } else {
             EmailFailures::create([
                 'email_request_id' => $request->id,
@@ -48,13 +57,9 @@ class SendEmailController {
         }
     }
 
-    private function recordSentEmail(RecordableEmail $recordableEmail) {
-        return SentEmail::create([
-            'to'      => $recordableEmail->to,
-            'from'    => $recordableEmail->from,
-            'bbc'     => $recordableEmail->bcc,
-            'content' => $recordableEmail->content(),
-        ]);
+    private function emailRequestSentUpdate(EmailRequest $request, RecordableEmail $recordableEmail) {
+        $request->content = $recordableEmail->content();
+        $request->sent();
     }
 
 }
