@@ -16,14 +16,14 @@ class Gateway extends Controller implements IGatewayModel {
 
     public function save($data) {
         if (!array_key_exists('to', $data)) {
-            $this->requestDefaultValues();
+            $this->requestDefaultValues($data);
         }
 
         return parent::save($data);
     }
 
     private function requestDefaultValues(&$data) {
-        $mailable = $this->getRecodableEmailWithRequest($data);
+        $mailable = $this->getRecordableEmailWithRequest($data);
         $mailable->build();
         $data['to'] = $mailable->to;
         $data['from'] = $mailable->from;

@@ -41,15 +41,21 @@ class EmailRequest extends Model {
     }
 
     public function setToAttribute($value) {
-        $this->attributes['to'] = json_encode($value);
+        if (count($value) > 0) {
+            $this->attributes['to'] = json_encode($value);
+        }
     }
 
     public function setFromAttribute($value) {
-        $this->attributes['from'] = json_encode($value);
+        if (count($value) > 0) {
+            $this->attributes['from'] = json_encode($value);
+        }
     }
 
-    public function setBbcAttribute($value) {
-        $this->attributes['bbc'] = json_encode($value);
+    public function setBccAttribute($value) {
+        if (count($value) > 0) {
+            $this->attributes['bcc'] = json_encode($value);
+        }
     }
 
     public function setContentAttribute($value) {
@@ -68,7 +74,7 @@ class EmailRequest extends Model {
         return json_decode($value);
     }
 
-    public function getBbcAttribute($value) {
+    public function getBccAttribute($value) {
         return json_decode($value);
     }
 

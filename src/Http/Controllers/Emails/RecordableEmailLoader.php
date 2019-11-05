@@ -2,11 +2,9 @@
 
 namespace Larangular\EmailRecord\Http\Controllers\Emails;
 
-use Larangular\EmailRecord\Models\EmailRequest;
-
 trait RecordableEmailLoader {
 
-    public function getRecodableEmailWithRequest(EmailRequest $request, string $emailType = null): RecordableEmail {
+    public function getRecordableEmailWithRequest(array $request, string $emailType = null): RecordableEmail {
         if (is_null($emailType)) {
             $emailType = $request->email_type;
         }

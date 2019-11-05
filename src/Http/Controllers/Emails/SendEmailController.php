@@ -42,7 +42,7 @@ class SendEmailController {
         $mailable = $this->getRecordableEmail($request->email_type_class, $request->content_id);
 
         if ($this->defaultBCC !== false) {
-            array_push($mailable->bcc, $this->defaultBCC);
+            $mailable->bcc($this->defaultBCC);
         }
 
         Mail::send($mailable);
