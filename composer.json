@@ -26,7 +26,10 @@
         "laravel": {
             "providers": [
                 "Larangular\\EmailRecord\\EmailRecordServiceProvider"
-            ]
+            ],
+            "aliases"  : {
+                "EmailReport": "Larangular\\EmailRecord\\Facades\\EmailReport"
+            }
         }
     }
 }

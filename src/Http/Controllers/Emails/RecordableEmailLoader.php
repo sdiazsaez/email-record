@@ -6,11 +6,11 @@ trait RecordableEmailLoader {
 
     public function getRecordableEmailWithRequest(array $request, string $emailType = null): RecordableEmail {
         if (is_null($emailType)) {
-            $emailType = $request->email_type;
+            $emailType = $request['email_type'];
         }
 
         $type = $this->getTypes($emailType);
-        return $this->getRecordableEmail($type['type_class'], $request->content_id);
+        return $this->getRecordableEmail($type['type_class'], $request['content_id']);
     }
 
     public function getRecordableEmail(string $type, int $contentId): RecordableEmail {

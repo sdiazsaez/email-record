@@ -4,6 +4,7 @@ namespace Larangular\EmailRecord;
 
 use EmailTypesBuilder;
 use Larangular\EmailRecord\Commands\SendCommand;
+use Larangular\EmailRecord\Http\Controllers\Emails\EmailReport;
 use Larangular\Installable\{Contracts\HasInstallable, Contracts\Installable, Installer\Installer};
 use Larangular\Installable\Support\{InstallableServiceProvider as ServiceProvider, PublisableGroups};
 
@@ -56,6 +57,13 @@ class EmailRecordServiceProvider extends ServiceProvider implements HasInstallab
             'name'      => 'email_failures',
             'timestamp' => true,
         ]);
+    }
+
+
+    public function provides() {
+        return [
+            EmailReport::class,
+        ];
     }
 
 }

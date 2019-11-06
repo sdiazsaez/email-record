@@ -3,6 +3,7 @@
 namespace Larangular\EmailRecord\Http\Controllers\Emails;
 
 use Illuminate\Support\Facades\Mail;
+use Larangular\EmailRecord\Facades\EmailReport;
 use Larangular\EmailRecord\Models\EmailFailures;
 use Larangular\EmailRecord\Models\EmailRequest;
 use Larangular\EmailRecord\Models\SentEmail;
@@ -41,6 +42,11 @@ class SendEmailController {
     private function send(EmailRequest $request): void {
         $mailable = $this->getRecordableEmail($request->email_type_class, $request->content_id);
 
+        if (!$mailable->isValid()) {
+            $this->reportEmailError($request->id, ['error' => 'invalid email']);
+            return;
+        }
+
         if ($this->defaultBCC !== false) {
             $mailable->bcc($this->defaultBCC);
         }
@@ -50,10 +56,19 @@ class SendEmailController {
         if (count(Mail::failures()) <= 0) {
             $this->emailRequestSentUpdate($request, $mailable);
         } else {
-            EmailFailures::create([
-                'email_request_id' => $request->id,
-                'failures'         => Mail::failures(),
-            ]);
+            $this->reportEmailError($request->id, Mail::failures());
+        }
+    }
+
+    private function reportEmailError(int $requestId, $failures, bool $reportToDev = false): void {
+        $data = [
+            'email_request_id' => $requestId,
+            'failures'         => $failures,
+        ];
+        EmailFailures::create($data);
+
+        if ($reportToDev) {
+            EmailReport::report($data);
         }
     }
 

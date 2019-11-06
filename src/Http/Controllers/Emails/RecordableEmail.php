@@ -10,6 +10,8 @@ abstract class RecordableEmail extends Mailable {
 
     use Queueable, SerializesModels;
 
+    abstract public function isValid(): boolean;
+
     abstract public function templatePath(): string;
 
     abstract public function content(): array;
