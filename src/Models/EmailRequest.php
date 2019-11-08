@@ -63,7 +63,7 @@ class EmailRequest extends Model {
     }
 
     public function getContentAttribute($value) {
-        return json_decode($value);
+        return json_decode($value, true);
     }
 
     public function getToAttribute($value) {

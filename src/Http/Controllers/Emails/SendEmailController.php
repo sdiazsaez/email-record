@@ -51,7 +51,7 @@ class SendEmailController {
             $mailable->bcc($this->defaultBCC);
         }
 
-        $this->emailSetView($mailable);
+        $this->emailSetView($mailable, $request);
         Mail::send($mailable);
 
         if (count(Mail::failures()) <= 0) {
@@ -78,8 +78,8 @@ class SendEmailController {
         $request->sent();
     }
 
-    private function emailSetView(RecordableEmail &$recordableEmail): RecordableEmail {
-        $recordableEmail->view($recordableEmail->templatePath(), $recordableEmail->content());
+    private function emailSetView(RecordableEmail &$recordableEmail, EmailRequest $emailRequest): RecordableEmail {
+        $recordableEmail->view($recordableEmail->templatePath(), $emailRequest->content);
         return $recordableEmail;
     }
 
