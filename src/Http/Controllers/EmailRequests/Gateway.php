@@ -28,7 +28,12 @@ class Gateway extends Controller implements IGatewayModel {
         $data['to'] = $mailable->to;
         $data['from'] = $mailable->from;
         $data['bcc'] = $mailable->bcc;
-        $data['content'] = array_merge($data['content'], $mailable->content());
+
+        $content = array_key_exists('content', $data)
+            ? $data['content']
+            : [];
+
+        $data['content'] = array_merge($content, $mailable->content());
 
         return $data;
     }
