@@ -16,7 +16,7 @@ class SendEmailController {
     private $defaultBCC;
 
     public function __construct() {
-        $this->defaultBCC = config('email-record.mail_default_bcc', false);
+        $this->defaultBCC = config('email-record.mail_bcc_default', false);
     }
 
     public function preview($id, $emailType = null) {
@@ -51,6 +51,8 @@ class SendEmailController {
             $mailable->bcc($this->defaultBCC);
         }
 
+        $this->setEmailTypeDefaultBcc($mailable, $request);
+
         $this->emailSetView($mailable, $request);
         Mail::send($mailable);
 
@@ -83,4 +85,13 @@ class SendEmailController {
         return $recordableEmail;
     }
 
+    private function setEmailTypeDefaultBcc(RecordableEmail &$mailable, EmailRequest $emailRequest): RecordableEmail {
+        $type = $this->getTypes($emailRequest->email_type);
+        if (array_key_exists('bcc', $type)) {
+            $bcc = explode(',', $type['bcc']);
+            $mailable->bcc($bcc);
+        }
+
+        return $mailable;
+    }
 }
