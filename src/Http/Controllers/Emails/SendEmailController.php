@@ -35,7 +35,11 @@ class SendEmailController {
                                      ->get();
 
         foreach ($emailRequests as $emailRequest) {
-            $this->send($emailRequest);
+            try {
+                $this->send($emailRequest);
+            } catch (\Exception $exception) {
+                $this->reportEmailError($emailRequest->id, ['error' => 'invalid email']);
+            }
         }
     }
 
