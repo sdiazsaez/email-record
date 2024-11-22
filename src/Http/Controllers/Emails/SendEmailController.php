@@ -75,6 +75,8 @@ class SendEmailController {
         ];
         EmailFailures::create($data);
 
+        EmailRequest::find($requestId)
+                    ->delete();
         if ($reportToDev) {
             EmailReport::report($data);
         }
