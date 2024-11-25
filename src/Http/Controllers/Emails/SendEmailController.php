@@ -39,7 +39,6 @@ class SendEmailController {
                 $this->send($emailRequest);
             } catch (\Exception $exception) {
                 $this->reportEmailError($emailRequest->id, ['error' => $exception->getMessage()]);
-                $emailRequest->delete();
             }
         }
     }
