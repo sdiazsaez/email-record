@@ -23,7 +23,7 @@ class EmailPreview {
 
     private function mailContent(int $id, $emailType = null): array {
         if (!is_null($emailType) || !isset($this->emailRequest)) {
-            return $this->mailable->content();
+            return $this->mailable->emailData();
         }
 
         return $this->emailRequest->content;
