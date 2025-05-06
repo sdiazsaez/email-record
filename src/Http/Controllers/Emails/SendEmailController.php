@@ -30,6 +30,17 @@ class SendEmailController {
 
     }
 
+    public function sendEmailById($id) {
+        $emailRequest = EmailRequest::find($id);
+        if (isset($emailRequest)) {
+            try {
+                $this->send($emailRequest);
+            } catch (\Exception $exception) {
+                $this->reportEmailError($emailRequest->id, ['error' => (string)$exception]);
+            }
+        }
+    }
+    
     public function sendEmails(): void {
         $emailRequests = EmailRequest::notSent()
                                      ->get();
@@ -58,13 +69,19 @@ class SendEmailController {
         $this->setEmailTypeDefaultBcc($mailable, $request);
 
         $this->emailSetView($mailable, $request);
-        Mail::send($mailable);
+        try {
+            Mail::send($mailable);
+            $this->emailRequestSentUpdate($request, $mailable);
+        } catch (\Exception $exception) {
+            $this->reportEmailError($request->id, [(string) $exception]);
+        }
 
+        /*
         if (count(Mail::failures()) <= 0) {
             $this->emailRequestSentUpdate($request, $mailable);
         } else {
             $this->reportEmailError($request->id, Mail::failures());
-        }
+        }*/
     }
 
     private function reportEmailError(int $requestId, $failures, bool $reportToDev = false): void {
@@ -82,7 +99,7 @@ class SendEmailController {
     }
 
     private function emailRequestSentUpdate(EmailRequest $request, RecordableEmail $recordableEmail) {
-        $request->content = $recordableEmail->content();
+        $request->content = $recordableEmail->emailData();
         $request->sent();
     }
 
