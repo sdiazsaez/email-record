@@ -14,6 +14,6 @@ abstract class RecordableEmail extends Mailable {
 
     abstract public function templatePath(): string;
 
-    abstract public function content(): array;
+    abstract public function emailData(): array;
 
 }
