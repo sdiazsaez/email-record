@@ -15,4 +15,8 @@ Route::group([
     'namespace' => '\Larangular\EmailRecord\Http\Controllers',
 ], static function () {
     Route::get('preview/{id}/{emailType?}', 'Emails\EmailPreview@preview');
+    Route::get('preview-all/{id}', function($id) {
+        $emailTypes = config('email-record.email_types');
+        return view('emails.common.preview-all', compact('id', 'emailTypes'));
+    });
 });
