@@ -1,5 +1,4 @@
 <?php
-
 namespace Larangular\EmailRecord\Commands;
 
 use Illuminate\Console\Command;
@@ -7,8 +6,10 @@ use Larangular\EmailRecord\Http\Controllers\Emails\SendEmailController;
 
 class SendCommand extends Command {
 
-    protected $signature = 'email-record:send';
-    protected $description = 'Send every pending email request';
+    // Add an optional {id?} argument
+    protected $signature = 'email-record:send {id?}';
+    protected $description = 'Send every pending email request or a specific one by ID';
+
     private $sendEmailController;
 
     public function __construct() {
@@ -17,6 +18,12 @@ class SendCommand extends Command {
     }
 
     public function handle() {
-        $this->sendEmailController->sendEmails();
+        $id = $this->argument('id');
+
+        if ($id) {
+            $this->sendEmailController->sendEmailById($id);
+        } else {
+            $this->sendEmailController->sendEmails();
+        }
     }
 }
