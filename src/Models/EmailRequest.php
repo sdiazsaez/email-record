@@ -11,7 +11,6 @@ use Larangular\RoutingController\CachableModel as RoutingModel;
 class EmailRequest extends Model {
 
     use SoftDeletes, RoutingModel, RecordableEmailLoader;
-    protected $dates    = ['deleted_at'];
     protected $fillable = [
         'content_id',
         'email_type',
